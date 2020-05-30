@@ -15,6 +15,15 @@ npm run build
 npm run build-dev
 ```
 
+## Functionality
+The app's main menu can be opened by clicking the button in the top-left of the screen. From there, you can set the global date format and the 12/24 hour time format or create a new clock.
+
+To create a new clock select a valid time zone from the list (case-sensitive) and color from the color menu, revealed by clicking the background color field.
+
+Once created, each clock can be removed with the button on its top-right, have its background color changed with the button on its bottom-right or have its order changed by dragging it over a different clock.
+
+All clock information and global settings are stored in the local storage of the browser.
+
 ## Author
 Borislav Branimirov
 
