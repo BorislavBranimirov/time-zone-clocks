@@ -86,6 +86,7 @@ const App = () => {
 
         newClocks.splice(newIndex, 0, oldClockObj);
         setClocks(newClocks);
+        localStorage.setItem('clocks', JSON.stringify(newClocks));
     };
 
     let clockList = clocks.map((clock) => {
