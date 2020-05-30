@@ -24,6 +24,8 @@ Once created, each clock can be removed with the button on its top-right, have i
 
 All clock information and global settings are stored in the local storage of the browser.
 
+![showcase of app functionality](showcase.gif)
+
 ## Author
 Borislav Branimirov
 
