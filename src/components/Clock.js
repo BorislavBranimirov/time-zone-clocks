@@ -6,8 +6,20 @@ const Clock = (props) => {
     const [backgroundColor, setbackgroundColor] = useState(null);
     const [timeFormat, setTimeFormat] = useState(null);
     const [hideColorMenu, setHideColorMenu] = useState(true);
-    const colors = useRef(['silver', 'orange', 'lightblue', 'darkolivegreen', 'lightsalmon', 'indianred', 'lightsteelblue',
-        'thistle', 'wheat', 'teal', 'mediumpurple', 'lightslategrey']);
+    const colors = useRef([
+        'silver',
+        'orange',
+        'lightblue',
+        'darkolivegreen',
+        'lightsalmon',
+        'indianred',
+        'lightsteelblue',
+        'thistle',
+        'wheat',
+        'teal',
+        'mediumpurple',
+        'lightslategrey',
+    ]);
     const originalColor = useRef(null);
 
     useEffect(() => {
@@ -29,17 +41,17 @@ const Clock = (props) => {
     }, []);
 
     useEffect(() => {
-        if (!props.time)
-            return;
+        if (!props.time) return;
 
-        const time = (props.timezone && props.timezone !== 'Local') ?
-            props.time.clone().tz(props.timezone) :
-            props.time.clone();
+        const time =
+            props.timezone && props.timezone !== 'Local'
+                ? props.time.clone().tz(props.timezone)
+                : props.time.clone();
         setTime(time);
     }, [props.time]);
 
-    const handleRemove = (e) => {
-        props.handleRemove(props.id)
+    const handleRemove = () => {
+        props.handleRemove(props.id);
     };
 
     const handleColorHover = (e) => {
@@ -81,11 +93,9 @@ const Clock = (props) => {
     });
 
     let clocksFontClass = 'defaultClockFont';
-    if(props.clocksCount === 1)
-        clocksFontClass = 'oneClockFont';
-    if(props.clocksCount === 2)
-        clocksFontClass = 'twoClockFont';
-    
+    if (props.clocksCount === 1) clocksFontClass = 'oneClockFont';
+    if (props.clocksCount === 2) clocksFontClass = 'twoClockFont';
+
     return (
         <div
             className="clock"
@@ -102,25 +112,34 @@ const Clock = (props) => {
                     <button className="clock-delete-btn" onClick={handleRemove}>
                         <i className="fas fa-times fa-3x"></i>
                     </button>
-                    <button className="clock-color-picker" onClick={() => setHideColorMenu(!hideColorMenu)}>
+                    <button
+                        className="clock-color-picker"
+                        onClick={() => setHideColorMenu(!hideColorMenu)}
+                    >
                         <i className="fas fa-tint fa-2x"></i>
                     </button>
                     {hideColorMenu ? (
                         <div className={`clock-text ${clocksFontClass}`}>
                             <p className="clock-name">{title}</p>
                             <p className="clock-day">{time.format('dddd')}</p>
-                            <p className="clock-date">{time.format(props.dateFormat || 'DD/MM/YYYY')}</p>
-                            <p className="clock-time">{time.format(props.meridiem ? 'hh:mm:ss A' : 'HH:mm:ss')}</p>
+                            <p className="clock-date">
+                                {time.format(props.dateFormat || 'DD/MM/YYYY')}
+                            </p>
+                            <p className="clock-time">
+                                {time.format(
+                                    props.meridiem ? 'hh:mm:ss A' : 'HH:mm:ss'
+                                )}
+                            </p>
                         </div>
                     ) : (
-                            <div className="clock-color-picker-menu">
-                                {colorOptions}
-                            </div>
-                        )}
+                        <div className="clock-color-picker-menu">
+                            {colorOptions}
+                        </div>
+                    )}
                 </React.Fragment>
             ) : (
-                    <div className={clocksFontClass}>Loading...</div>
-                )}
+                <div className={clocksFontClass}>Loading...</div>
+            )}
         </div>
     );
 };

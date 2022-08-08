@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Menu from './components/Menu';
 import Clock from './components/Clock';
 import moment from 'moment-timezone';
-import shortid from 'shortid';
+import { nanoid } from 'nanoid';
 import './style.scss';
 
 const App = () => {
@@ -21,7 +21,8 @@ const App = () => {
 
         setDateFormat(localStorage.getItem('dateFormat') || 'DD/MM/YYYY');
 
-        const localStorageClocks = JSON.parse(localStorage.getItem('clocks')) || [];
+        const localStorageClocks =
+            JSON.parse(localStorage.getItem('clocks')) || [];
         if (localStorageClocks.length === 0) {
             addClock('Local', 'silver');
         } else {
@@ -30,11 +31,11 @@ const App = () => {
 
         return () => {
             clearInterval(intervalId);
-        }
+        };
     }, []);
 
     const addClock = (timezone, backgroundColor) => {
-        const newClock = { id: shortid.generate(), timezone, backgroundColor };
+        const newClock = { id: nanoid(), timezone, backgroundColor };
         const newClocks = [...clocks, newClock];
         setClocks(newClocks);
         localStorage.setItem('clocks', JSON.stringify(newClocks));
@@ -68,7 +69,10 @@ const App = () => {
 
     const handleDragEnter = (e) => {
         const el = e.target.closest('.clock');
-        if (el.id === draggedClockId.current) {
+        if (
+            draggedClockId.current === null ||
+            el.id === draggedClockId.current
+        ) {
             return;
         }
 
@@ -90,21 +94,23 @@ const App = () => {
     };
 
     let clockList = clocks.map((clock) => {
-        return (<Clock
-            key={clock.id}
-            id={clock.id}
-            time={time}
-            timezone={clock.timezone}
-            backgroundColor={clock.backgroundColor}
-            handleRemove={removeClock}
-            handleColorChange={changeColorClock}
-            dateFormat={dateFormat}
-            meridiem={meridiem}
-            handleDragStart={handleDragStart}
-            handleDragEnd={handleDragEnd}
-            handleDragEnter={handleDragEnter}
-            clocksCount={clocks.length}
-        />);
+        return (
+            <Clock
+                key={clock.id}
+                id={clock.id}
+                time={time}
+                timezone={clock.timezone}
+                backgroundColor={clock.backgroundColor}
+                handleRemove={removeClock}
+                handleColorChange={changeColorClock}
+                dateFormat={dateFormat}
+                meridiem={meridiem}
+                handleDragStart={handleDragStart}
+                handleDragEnd={handleDragEnd}
+                handleDragEnter={handleDragEnter}
+                clocksCount={clocks.length}
+            />
+        );
     });
 
     return (
@@ -116,9 +122,7 @@ const App = () => {
                 dateFormat={dateFormat}
                 setDateFormat={setDateFormat}
             />
-            <div className="clocks-container">
-                {clockList}
-            </div>
+            <div className="clocks-container">{clockList}</div>
         </React.Fragment>
     );
 };
